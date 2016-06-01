@@ -20,8 +20,21 @@ io.on('connection', (socket) => {
   });
 
   socket.on('room', (room) => {
+    socket.room = room;
     socket.join(room);
     socket.emit('room', `Successfully joined room: ${room}`);
+  });
+
+  socket.on('play', (data) => {
+    if(data) {
+      io.to(socket.room).emit('start feed', true);
+    }
+  });
+
+  socket.on('stop', (data) => {
+    if(data) {
+      io.to(socket.room).emit('stop feed', true);
+    }
   });
 });
 
